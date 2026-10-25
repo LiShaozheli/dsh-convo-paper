@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Check Node zstd support
+        run: node -e "const z=require('node:zlib'); if(!z.zstdDecompressSync){console.error('zstd unsupported');process.exit(1)} console.log('zstd ok')"
+      - name: Check vendored core is in sync
+        run: node scripts/sync-core.mjs --check
+      - name: Run tests
+        run: |
+          node test/smoke.test.mjs
+          node test/plugin.test.mjs
