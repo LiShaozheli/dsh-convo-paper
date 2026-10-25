@@ -1,0 +1,14 @@
+[
+  {
+    "id": "R1",
+    "claimId": "C003",
+    "title": "Nanometre-scale thermometry in a living cell",
+    "doi": "10.1038/nature12373"
+  },
+  {
+    "id": "R2",
+    "claimId": "C004",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "doi": "10.48550/arXiv.2005.11401"
+  }
+]

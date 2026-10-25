@@ -1,0 +1,25 @@
+[
+  {
+    "id": "R1",
+    "claimId": "C003",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "doi": "10.48550/arXiv.2005.11401"
+  },
+  {
+    "id": "R2",
+    "claimId": "C004",
+    "title": "Attention Is All You Need",
+    "doi": "10.48550/arXiv.1706.03762"
+  },
+  {
+    "id": "R3",
+    "claimId": "C005",
+    "title": "Large Language Models Are Not Yet Reliable Scientific Reviewers: A Study of Fabricated Citations in Machine-Generated Manuscripts"
+  },
+  {
+    "id": "R4",
+    "claimId": "C006",
+    "title": "基于大语言模型的对话式科研辅助系统设计与实现",
+    "doi": "10.99999/this-doi-does-not-exist.2024"
+  }
+]

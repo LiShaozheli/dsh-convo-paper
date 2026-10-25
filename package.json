@@ -1,0 +1,42 @@
+{
+  "name": "dsh-convo-paper",
+  "version": "0.1.0",
+  "description": "把 DSH 对话整理成论文：按说话人抽取上下文、提炼带出处的观点、生成章节骨架，并用 Crossref/DataCite/OpenAlex/arXiv 逐条核实参考文献。",
+  "type": "module",
+  "bin": {
+    "convo-paper": "./bin/convo-paper.mjs"
+  },
+  "scripts": {
+    "test": "node test/smoke.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.15"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-skill",
+    "deepseek-harness",
+    "paper",
+    "conversation",
+    "academic-writing",
+    "citation",
+    "reference-verification"
+  ],
+  "author": "LiShaozheli",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiShaozheli/dsh-convo-paper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LiShaozheli/dsh-convo-paper/issues"
+  },
+  "homepage": "https://github.com/LiShaozheli/dsh-convo-paper#readme"
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "R1",
+    "claimId": "C003",
+    "title": "Citation Accuracy Challenges Posed by Large Language Models",
+    "doi": "10.2196/72998"
+  },
+  {
+    "id": "R2",
+    "claimId": "C003",
+    "title": "High Accuracy, Questionable References: Large Language Models' Performance and Citation Reliability in Foot and Ankle Surgery Examinations"
+  },
+  {
+    "id": "R3",
+    "claimId": "C004",
+    "title": "A Fully Automated Conversation-to-Paper Pipeline with Guaranteed Citation Integrity",
+    "doi": "10.9999/fake.2026.001"
+  }
+]
