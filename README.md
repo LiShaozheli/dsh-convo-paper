@@ -2,13 +2,24 @@
 
 把一段对话整理成一篇论文——但**参考文献必须真的存在**。
 
-[![tests](https://img.shields.io/badge/tests-8%20passed-brightgreen)](#开发与测试)
+[![tests](https://img.shields.io/badge/tests-16%20passed-brightgreen)](#开发与测试)
 [![node](https://img.shields.io/badge/node-%E2%89%A522.15-blue)](https://nodejs.org)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）技能包：读会话日志 → 按说话人还原上下文 → 抽出有创意的观点与结论 → 生成论文章节骨架 → 逐条核实参考文献 → 交给模型写成稿。
+一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）扩展：读会话日志 → 按说话人还原上下文 → 抽出有创意的观点与结论 → 生成论文章节骨架 → 逐条核实参考文献 → 交给模型写成稿。
 
 **它不替代写作，它保证写作不被编造拖垮。**
+
+## 两种形态
+
+| | 插件版（`plugin/`） | 技能版（仓库根目录） |
+| --- | --- | --- |
+| 出现在「已安装插件」 | ✅ `设置 → 插件` | ❌ 在技能列表 / `@` 菜单 |
+| 能力 | 5 个原生工具 + `/paper` 命令 | 同一套逻辑的 CLI，模型读 `SKILL.md` 后调用 |
+| 安装 | `dsh plugin add github:LiShaozheli/dsh-convo-paper#path:/plugin` | 拷目录到 `~/.dsh/skills/convo-paper` |
+| 依赖 | 无 | 无 |
+
+两者共用 `lib/`（插件内的 `dsh/lib/` 由 `scripts/sync-core.mjs` 生成，测试会校验不漂移）。
 
 ## 它解决什么
 
@@ -57,7 +68,14 @@ DSH 会话日志 (session.v4.jsonl.zstd)
 
 ## 安装
 
-作为 DSH 技能安装（需要一个已初始化的 DSH）：
+**插件版**（会出现在「已安装插件」里，带 `/paper` 命令）：
+
+```bash
+dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
+# 装完重启 DSH → 设置 → 插件 里出现 convo-paper
+```
+
+**技能版**（拷目录即可，不需要重启 profile 依赖）：
 
 ```bash
 git clone https://github.com/LiShaozheli/dsh-convo-paper.git
@@ -124,8 +142,14 @@ DOI 路由：`10.48550/arXiv.*`、Zenodo、OSF 等 DataCite 注册的 DOI 走 Da
 ## 开发与测试
 
 ```bash
-node test/smoke.test.mjs     # 8 个用例：解码、说话人分离、论点抽取、著录格式、骨架生成
+npm test          # 16 个用例 + 核心代码与插件副本的一致性校验
 ```
+
+| 套件 | 覆盖 |
+| --- | --- |
+| `test/smoke.test.mjs` | 多帧解码、说话人分离、论点抽取、GB/T 7714 著录、骨架生成 |
+| `test/plugin.test.mjs` | mock ctx 下注册 5 个工具与 `/paper`，用临时 `DSH_HOME` 造真实会话日志跑完端到端 |
+| `scripts/sync-core.mjs --check` | `lib/` 与 `plugin/dsh/lib/` 不漂移 |
 
 无第三方依赖、无构建步骤。核心模块：
 

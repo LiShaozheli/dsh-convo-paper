@@ -1,0 +1,42 @@
+{
+  "name": "dsh-convo-paper-plugin",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness 插件：把对话整理成论文。按说话人还原上下文、提炼带出处的论点、生成论文骨架，并用 Crossref/DataCite/OpenAlex/arXiv 逐条核验引用。",
+  "type": "module",
+  "exports": {
+    ".": "./dsh/index.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=22.15"
+  },
+  "files": [
+    "dsh",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis-plugin",
+    "paper",
+    "academic-writing",
+    "citation"
+  ],
+  "author": "LiShaozheli",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiShaozheli/dsh-convo-paper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LiShaozheli/dsh-convo-paper/issues"
+  },
+  "homepage": "https://github.com/LiShaozheli/dsh-convo-paper#readme"
+}

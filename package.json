@@ -7,7 +7,8 @@
     "convo-paper": "./bin/convo-paper.mjs"
   },
   "scripts": {
-    "test": "node test/smoke.test.mjs"
+    "test": "node test/smoke.test.mjs && node test/plugin.test.mjs && node scripts/sync-core.mjs --check",
+    "sync": "node scripts/sync-core.mjs"
   },
   "engines": {
     "node": ">=22.15"
