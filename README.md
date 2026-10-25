@@ -71,9 +71,12 @@ DSH 会话日志 (session.v4.jsonl.zstd)
 **插件版**（会出现在「已安装插件」里，带 `/paper` 命令）：
 
 ```bash
-dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
+dsh plugin --profile desktop add dsh-convo-paper-plugin        # 从 npm 装（推荐）
+# 或直接从仓库装：dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
 # 装完重启 DSH → 设置 → 插件 里出现 convo-paper
 ```
+
+> npm 包：https://www.npmjs.com/package/dsh-convo-paper-plugin
 
 **技能版**（拷目录即可，不需要重启 profile 依赖）：
 

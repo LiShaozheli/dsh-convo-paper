@@ -18,7 +18,8 @@ DeepSeek Harness 插件版：把对话整理成论文，并用确定性检索核
 插件需要装进 profile（不是拷文件夹）：
 
 ```bash
-dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
+dsh plugin --profile desktop add dsh-convo-paper-plugin          # 从 npm 装（推荐）
+# 或直接从仓库装：dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
 ```
 
 装完重启 DSH，`设置 → 插件` 里会出现 **convo-paper**，输入框输入 `/paper` 可用。
