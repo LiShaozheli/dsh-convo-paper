@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "convo-paper · 对话转论文",
+    "description": "把一段 DSH 对话整理成论文：按说话人还原上下文，提炼带出处的论点，生成章节骨架，并用 Crossref / DataCite / OpenAlex / arXiv 逐条核验参考文献。"
+  }
+}

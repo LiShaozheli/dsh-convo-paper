@@ -175,10 +175,15 @@ export function apply(ctx) {
     presentCall: (args = {}) => ({ card: 'generic', title: '对话转论文', kind: 'edit', rawInput: String(args.session || 'latest') }),
   });
 
-  if (ctx.commands && typeof ctx.commands.register === 'function') {
+  // Cordis 4 refuses to read an undeclared service through `ctx.commands`
+  // ("cannot get property ... without inject") and that throw would roll back
+  // the whole entry — tools included. Read the service reflectively instead,
+  // which needs no inject and stays undefined on hosts without commands.
+  const commands = ctx.reflect && typeof ctx.reflect.get === 'function' ? ctx.reflect.get('commands', false) : undefined;
+  if (commands && typeof commands.register === 'function') {
     ctx.effect(
       () =>
-        ctx.commands.register({
+        commands.register({
           name: 'paper',
           description: '把当前（或指定）会话整理成论文骨架',
           input: { hint: '[latest|<会话id>] [--out <目录>]' },

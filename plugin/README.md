@@ -18,17 +18,24 @@ DeepSeek Harness 插件版：把对话整理成论文，并用确定性检索核
 插件需要装进 profile（不是拷文件夹）：
 
 ```bash
-dsh plugin --profile desktop add dsh-convo-paper-plugin          # 从 npm 装（推荐）
+dsh plugin --profile desktop add dsh-convo-paper-plugin@0.1.1    # 从 npm 装（推荐；0.1.0 有激活缺陷）
 # 或直接从仓库装：dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
+# 本地开发：dsh plugin --profile desktop add link:C:/path/to/dsh-convo-paper/plugin
 ```
 
-装完重启 DSH，`设置 → 插件` 里会出现 **convo-paper**，输入框输入 `/paper` 可用。
+装完在侧栏 **插件 → 已安装插件** 里出现 **convo-paper · 对话转论文**（有 HMR 的 profile 会直接热加载，没有则重启 DSH），输入框输入 `/paper` 可用。
+
+> **0.1.0 的激活缺陷**：插件曾用 `ctx.commands` 读取未在 `inject` 中声明的服务，Cordis 4 会抛
+> `cannot get property "commands" without inject`，导致整条 entry 回滚、5 个工具一个都没注册 ——
+> 表现就是「插件装了但像没装」。0.1.1 改用 `ctx.reflect.get('commands', false)`，并加了
+> 一个「宿主没有 commands 服务」的回归用例。
 
 也可以只在某个 profile 里试用：
 
 ```bash
 dsh plugin --profile web add github:LiShaozheli/dsh-convo-paper#path:/plugin
 ```
+
 
 ## 与技能版的取舍
 

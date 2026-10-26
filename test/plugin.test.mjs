@@ -32,12 +32,24 @@ function makeHome() {
   return { home, project, sessionDir: dir };
 }
 
-function mockCtx() {
+/**
+ * Minimal stand-in for a Cordis 4 context.
+ *
+ * `commands` is a throwing getter on purpose: a real Cordis context refuses to
+ * read a service the plugin did not declare in `inject` ("cannot get property
+ * \"commands\" without inject") and that throw rolls back the whole entry. The
+ * plugin must reach the optional service through `ctx.reflect.get` instead.
+ */
+function mockCtx({ withCommands = true } = {}) {
   const tools = [];
   const commands = [];
+  const commandsService = { register: (cmd) => { commands.push(cmd); return () => {}; } };
   const ctx = {
     tools: { register: (def) => { tools.push(def); return () => {}; } },
-    commands: { register: (cmd) => { commands.push(cmd); return () => {}; } },
+    get commands() {
+      throw new Error('cannot get property "commands" without inject');
+    },
+    reflect: { get: (service) => (withCommands && service === 'commands' ? commandsService : undefined) },
     effect(fn) { return fn(); },
   };
   return { ctx, tools, commands };
@@ -154,4 +166,13 @@ test('/paper handler runs the pipeline for the latest session', async () => {
   const result = await commands[0].handler({ args: 'test1' });
   assert.equal(result.kind, 'text');
   assert.match(result.text, /已抽取 session-test1/);
+});
+
+test('apply survives a host that provides no commands service', () => {
+  const { ctx, tools, commands } = mockCtx({ withCommands: false });
+  // A Cordis host without the commands plugin still gets every tool, and the
+  // optional slash command is skipped instead of failing the entry.
+  assert.doesNotThrow(() => apply(ctx));
+  assert.deepEqual(tools.map((t) => t.name).sort(), ['paper_build', 'paper_claims', 'paper_extract', 'paper_run', 'paper_verify_refs']);
+  assert.equal(commands.length, 0);
 });

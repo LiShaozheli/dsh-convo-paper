@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "convo-paper",
+    "description": "Turn a DSH conversation into a paper draft: speaker-aware transcript, claims with provenance, a section skeleton, and references verified against Crossref / DataCite / OpenAlex / arXiv."
+  }
+}
