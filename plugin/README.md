@@ -18,7 +18,7 @@ DeepSeek Harness 插件版：把对话整理成论文，并用确定性检索核
 插件需要装进 profile（不是拷文件夹）：
 
 ```bash
-dsh plugin --profile desktop add dsh-convo-paper-plugin@0.1.1    # 从 npm 装（推荐；0.1.0 有激活缺陷）
+dsh plugin --profile desktop add dsh-convo-paper-plugin@0.1.2    # 从 npm 装（推荐；0.1.0 有激活缺陷）
 # 或直接从仓库装：dsh plugin --profile desktop add github:LiShaozheli/dsh-convo-paper#path:/plugin
 # 本地开发：dsh plugin --profile desktop add link:C:/path/to/dsh-convo-paper/plugin
 ```
@@ -29,6 +29,12 @@ dsh plugin --profile desktop add dsh-convo-paper-plugin@0.1.1    # 从 npm 装�
 > `cannot get property "commands" without inject`，导致整条 entry 回滚、5 个工具一个都没注册 ——
 > 表现就是「插件装了但像没装」。0.1.1 改用 `ctx.reflect.get('commands', false)`，并加了
 > 一个「宿主没有 commands 服务」的回归用例。
+>
+> **0.1.1 的 `/paper` 缺陷**：handler 返回了 `{ kind: 'text' }`，而宿主的命令注册表只接受
+> `success` / `error`，于是报 `command "paper" returned unknown result kind "text"`。
+> 0.1.2 改为 `success`/`error` 两种形状，并把失败阶段（extract/claims/build）如实作为 error 返回；
+> 测试里复刻了宿主的校验逻辑，形状不对会先在测试里挂掉。
+
 
 也可以只在某个 profile 里试用：
 
