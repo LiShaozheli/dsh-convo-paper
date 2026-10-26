@@ -158,14 +158,45 @@ test('paper_verify_refs rejects an empty input instead of calling the network', 
   assert.equal(result.code, 'missing-refs');
 });
 
+/**
+ * The Host's own command-result boundary (`normalizeResult` in
+ * @deepseek-ai/dsh-commands): exactly two kinds, `success` with optional text,
+ * `error` with non-empty text. Reproduced here so a shape regression fails in
+ * this suite instead of at the user's `/paper`.
+ */
+function assertCommandResult(command, value) {
+  assert.equal(typeof value, 'object', `${command} handler must return a CommandResult`);
+  assert.ok(value !== null && 'kind' in value, `${command} handler must return a CommandResult`);
+  if (value.kind === 'success') {
+    if (value.text !== undefined) assert.equal(typeof value.text, 'string');
+    return;
+  }
+  if (value.kind === 'error') {
+    assert.ok(typeof value.text === 'string' && value.text.trim().length > 0, 'error text must be non-empty');
+    return;
+  }
+  assert.fail(`command "${command}" returned unknown result kind "${String(value.kind)}"`);
+}
+
 test('/paper handler runs the pipeline for the latest session', async () => {
   const { home } = makeHome();
   process.env.DSH_HOME = home;
   const { ctx, commands } = mockCtx();
   apply(ctx);
   const result = await commands[0].handler({ args: 'test1' });
-  assert.equal(result.kind, 'text');
+  assertCommandResult('paper', result);
+  assert.equal(result.kind, 'success');
   assert.match(result.text, /已抽取 session-test1/);
+});
+
+test('/paper reports a failure as the error kind, not as success text', async () => {
+  const { home } = makeHome();
+  process.env.DSH_HOME = home;
+  const { ctx, commands } = mockCtx();
+  apply(ctx);
+  const result = await commands[0].handler({ args: 'no-such-session' });
+  assertCommandResult('paper', result);
+  assert.equal(result.kind, 'error');
 });
 
 test('apply survives a host that provides no commands service', () => {

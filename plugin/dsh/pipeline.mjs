@@ -151,7 +151,12 @@ export async function runVerifyRefs({ refs, out, cwd } = {}) {
 
 export async function runAll({ session, cwd, out, includeTools = false, perTurn = 6 } = {}) {
   const extracted = await runExtract({ session, cwd, out, includeTools });
+  // Each stage reports failures as values, so a one-shot run has to stop and
+  // surface the failing stage instead of carrying on with an undefined out dir.
+  if (extracted.ok === false) return { ...extracted, step: 'run', failedAt: 'extract' };
   const claims = await runClaims({ session, cwd, out: extracted.out, perTurn });
+  if (claims.ok === false) return { ...claims, step: 'run', failedAt: 'claims', extracted };
   const built = await runBuild({ out: extracted.out });
+  if (built.ok === false) return { ...built, step: 'run', failedAt: 'build', extracted, claims };
   return { ok: true, step: 'run', out: extracted.out, extracted, claims, built };
 }

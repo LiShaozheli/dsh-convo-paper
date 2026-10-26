@@ -195,7 +195,11 @@ export function apply(ctx) {
               const outIdx = parts.indexOf('--out');
               const out = outIdx >= 0 ? parts[outIdx + 1] : undefined;
               const result = await runAll({ session, out });
-              return { kind: 'text', text: summarize(result) };
+              const text = summarize(result);
+              // The host's command registry accepts exactly two result kinds —
+              // `success` (optional text) and `error` (non-empty text). Anything
+              // else fails validation with "unknown result kind".
+              return result && result.ok === false ? { kind: 'error', text } : { kind: 'success', text };
             } catch (error) {
               return { kind: 'error', text: error instanceof Error ? error.message : String(error) };
             }

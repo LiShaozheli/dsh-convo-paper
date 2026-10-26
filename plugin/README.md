@@ -57,12 +57,13 @@ export function apply(ctx) { ctx.effect(() => ctx.tools.register({...}), 'label'
 
 - 工具用 `ctx.tools.register` 的普通对象定义（参数走 JSON Schema，输出走 `output.schema` + `render`），因此不依赖 `@deepseek-ai/dsh-tools` 的 `defineTool`，装到任何兼容 profile 都能跑。
 - 命令用 `ctx.commands.register`，且做了存在性判断——宿主没有 commands 服务时自动跳过，不影响工具。
+- **命令返回值只有两种合法形状**：`{ kind: 'success', text? }` 和 `{ kind: 'error', text }`（error 的 text 必须非空）。宿主在注册表边界逐字段校验，返回别的 `kind` 会直接报 `command "paper" returned unknown result kind "..."`。
 - 所有注册都包在 `ctx.effect(...)` 里，插件卸载时自动注销。
 
 ## 验证
 
 ```bash
-node test/plugin.test.mjs     # mock ctx：8 个用例，含真实会话日志端到端
+node test/plugin.test.mjs     # mock ctx：10 个用例，含真实会话日志端到端
 node scripts/sync-core.mjs --check
 ```
 
